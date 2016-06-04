@@ -11,6 +11,7 @@ export const Counter = (props) => (
         {props.counter}
       </span>
     </h2>
+<Button icon='bookmark' label='Bookmark' raised primary />
     <Button onClick={props.increment}>
       Increment
     </Button>

@@ -1,4 +1,38 @@
+.homeLink {
+  font-size: 1.6rem;
+}
 .activeRoute {
-  font-weight: bold;
-  text-decoration: underline;
+
+  &, &:focus, &:active {
+    text-decoration: none;
+  }
+
+  &:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;  display: block;
+    width: 100%;
+    height: .3rem;
+    content: '';
+  background-color: #ff4081;}
+}
+.route {
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  position: relative;
+  display: inline-block;
+  padding: 0 1.5rem;
+  margin-right: 1rem;
+  line-height: 6.4rem;
+  color: #fff;
+}
+
+.nav {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  padding: 0;
 }
