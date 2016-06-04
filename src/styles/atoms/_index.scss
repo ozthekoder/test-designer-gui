@@ -7,7 +7,7 @@
 // that can’t be broken down any further without ceasing to be functional.
 //
 // @source - http://atomicdesign.bradfrost.com/chapter-2/
-.rotate-animation-90-hover: hover{
+.rotate-animation-90-hover:hover {
   animation: rotate-90 ease-in-out 0.5s;
   animation-iteration-count: infinite;
   transform-origin: 50% 50%;
