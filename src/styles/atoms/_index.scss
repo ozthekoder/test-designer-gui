@@ -1,0 +1,71 @@
+// Atoms
+//
+// If atoms are the basic building blocks of matter, then the atoms of
+// our interfaces serve as the foundational building blocks that
+// comprise all our user interfaces. Therefore these atoms would include
+// basic HTML tags like form labels, inputs, buttons, and other elements
+// that can’t be broken down any further without ceasing to be functional.
+//
+// @source - http://atomicdesign.bradfrost.com/chapter-2/
+.rotate-animation-90-hover: hover{
+  animation: rotate-90 ease-in-out 0.5s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  -webkit-animation: rotate-90 ease-in-out 0.5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+  -moz-animation: rotate-90 ease-in-out 0.5s;
+  -moz-animation-iteration-count: infinite;
+  -moz-transform-origin: 50% 50%;
+  -o-animation: rotate-90 ease-in-out 0.5s;
+  -o-animation-iteration-count: infinite;
+  -o-transform-origin: 50% 50%;
+  -ms-animation: rotate-90 ease-in-out 0.5s;
+  -ms-animation-iteration-count: infinite;
+  -ms-transform-origin: 50% 50%;
+}
+
+@keyframes rotate-90{
+  0% {
+    transform:  rotate(0deg) ;
+  }
+  100% {
+    transform:  rotate(90deg) ;
+  }
+}
+
+@-moz-keyframes rotate-90{
+  0% {
+    -moz-transform:  rotate(0deg) ;
+  }
+  100% {
+    -moz-transform:  rotate(90deg) ;
+  }
+}
+
+@-webkit-keyframes rotate-90 {
+  0% {
+    -webkit-transform:  rotate(0deg) ;
+  }
+  100% {
+    -webkit-transform:  rotate(90deg) ;
+  }
+}
+
+@-o-keyframes rotate-90 {
+  0% {
+    -o-transform:  rotate(0deg) ;
+  }
+  100% {
+    -o-transform:  rotate(90deg) ;
+  }
+}
+
+@-ms-keyframes rotate-90 {
+  0% {
+    -ms-transform:  rotate(0deg) ;
+  }
+  100% {
+    -ms-transform:  rotate(90deg) ;
+  }
+}
