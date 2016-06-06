@@ -1,0 +1,69 @@
+input {
+  font-size: 1.4rem;
+}
+
+li {
+  font-size: 1.4rem;
+  list-style-type: none;
+  /*color: #fff;*/
+  position: relative;
+  margin-left: -15px;
+  padding: 4px;
+}
+
+li label {
+  cursor: pointer;
+  /*background: url("static/folder-horizontal.png") no-repeat 15px 2px;*/
+  display: block;
+  display: inline-block;
+}
+
+li input {
+  width: 1.4rem;
+  height: 1.4rem;
+  position: absolute;
+  left: -0.8rem;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+li input + ol {
+  height: 1.6rem;
+  margin: -16px 0 0 -44px;
+  /*background: url("static/toggle-small-expand.png") no-repeat 40px 0;*/
+}
+
+li input + ol > li {
+  display: none;
+  margin-left: -14px !important;
+  padding-left: 1px
+}
+
+li.leaf {
+  margin-left: -1px !important;
+}
+
+li.leaf a {
+  display: inline-block;
+  padding-left: 21px;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px;
+  /*background: url("static/document.png") no-repeat 0 0;*/
+}
+
+li input:checked + ol {
+  height: auto;
+  margin: -20px 0 0 -45px;
+  padding: 25px 0 0 75px;  /*background: url("static/toggle-small.png") no-repeat 40px 5px;*/
+}
+
+li input:checked + ol > li {
+  display: block;
+  margin: 0 0 0.063em;
+}
+
+li input:checked + ol > li:first-child {
+  margin: 0 0 0.125em;
+}

@@ -32,9 +32,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  inContext: {
-
-  },
+  inContext:config.Defaults.blueprint('multiple'),
   plugins: config.plugins
 }
 

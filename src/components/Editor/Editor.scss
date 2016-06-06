@@ -1,1 +1,25 @@
+.column {
+  float: left;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
 
+.treeColumn {
+  @extend .column;
+  width: 40%;
+  border-right: 1px solid #eee;
+}
+
+.listColumn {
+  @extend .column;
+  width: 20%;
+  border-right: 1px solid #eee;
+}
+
+.detailColumn {
+  @extend .column;
+  width: 40%;
+}

@@ -1,9 +1,10 @@
 import React from 'react'
-import Button from 'react-toolbox/lib/button';
 import classes from './TreeView.scss'
+import TreeNode from '../TreeNode';
 
 export const TreeView = (props) => (
   <div className='box'>
+    <TreeNode blueprint={props.blueprint} isRoot={true}/>
   </div>
 )
 
