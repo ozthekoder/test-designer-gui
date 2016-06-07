@@ -2,39 +2,68 @@ input {
   font-size: 1.4rem;
 }
 
-li {
+.branch {
   font-size: 1.4rem;
   list-style-type: none;
   /*color: #fff;*/
   position: relative;
-  margin-left: -15px;
-  padding: 4px;
+  margin-left: -30px;
+  padding: 8px;
+
+  &[type="$before"] {
+    &, button span {
+      color: #6B0C22;
+    }
+  }
+
+  &[type="$beforeEach"] {
+    &, button span {
+      color: #D9042B;
+    }
+  }
+
+  &[type="$ops"] {
+    &, button span {
+      color: #8364F4;
+    }
+  }
+
+  &[type="$after"] {
+    &, button span {
+      color: #588C8C;
+    }
+  }
+
+  &[type="$afterEach"] {
+    &, button span {
+      color: #011C26;
+    }
+  }
 }
 
-li label {
+.branch label {
   cursor: pointer;
   /*background: url("static/folder-horizontal.png") no-repeat 15px 2px;*/
   display: block;
   display: inline-block;
 }
 
-li input {
+.branch input {
   width: 1.4rem;
   height: 1.4rem;
   position: absolute;
-  left: -0.8rem;
-  top: 0;
-  opacity: 0;
+  left: 0.8rem;
+  top: 1.9rem;  opacity: 0;
   cursor: pointer;
 }
 
-li input + ol {
+.branch input + ol {
   height: 1.6rem;
   margin: -16px 0 0 -44px;
   /*background: url("static/toggle-small-expand.png") no-repeat 40px 0;*/
 }
 
-li input + ol > li {
+.branch input + ol > li {
   display: none;
   margin-left: -14px !important;
   padding-left: 1px
@@ -61,9 +90,7 @@ li input:checked + ol {
 
 li input:checked + ol > li {
   display: block;
-  margin: 0 0 0.063em;
 }
 
 li input:checked + ol > li:first-child {
-  margin: 0 0 0.125em;
 }

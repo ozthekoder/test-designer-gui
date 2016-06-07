@@ -14,7 +14,7 @@ export default class Defaults {
     }
   }
 
-  static operation($plugin, $op, override = {}) {
+  static operation($plugin, $op='blank', override = {}) {
     return this.blueprint('single', Object.assign({ $plugin, $op }, override)
 )
   }

@@ -4,14 +4,13 @@ import TreeNode from '../TreeNode';
 
 export const TreeView = (props) => (
   <div className='box'>
-    <TreeNode blueprint={props.blueprint} isRoot={true}/>
+    <TreeNode isRoot={true} blueprint={props.blueprint} plugins={props.plugins} />
   </div>
 )
 
 TreeView.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
   plugins: React.PropTypes.object.isRequired,
-  logDefaultPlugins: React.PropTypes.func.isRequired
 }
 
 export default TreeView

@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from './TreeNode.scss'
-import {Button, IconButton} from 'react-toolbox/lib/button';
+import AddOpMenu from '../AddOpMenu'
 const recursive = [
   '$before',
   '$beforeEach',
@@ -12,7 +12,7 @@ export const TreeNode = (props) => {
   const { blueprint, isRoot } = props;
   let tree;
   tree = (
-    <li>
+    <li className={classes.branch}>
     <label htmlFor={blueprint.$id}>{blueprint.$name}</label>
     <input type="checkbox" id={blueprint.$id} />
     <ol>
@@ -22,10 +22,10 @@ export const TreeNode = (props) => {
         const ops = blueprint[k] || [];
         console.log(`${blueprint.$id}.${k}`)
         return (
-          <li key={j}>
+          <li type={k} className={classes.branch} key={j}>
             <label htmlFor={`${blueprint.$id}.${k}`}>{k}</label>
             <input type="checkbox" id={`${blueprint.$id}.${k}`} />
-            <IconButton icon='add' accent />
+            <AddOpMenu addNewNode={props.addNewNode} parentId={blueprint.$id} collection={k} plugins={props.plugins}/>
             <ol>
               { ops.map((op, i) => <TreeNode blueprint={op} key={i} isRoot={false} />) }
             </ol>

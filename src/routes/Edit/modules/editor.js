@@ -1,30 +1,55 @@
 import config from '../../../config';
+const recursive = [
+  '$before',
+  '$beforeEach',
+  '$ops',
+  '$afterEach',
+  '$after'
+]
+
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const LOG_DEFAULT_PLUGINS = 'LOG_DEFAULT_PLUGINS'
+export const ADD_NEW_NODE = 'ADD_NODE'
+export const REMOVE_NODE = 'REMOVE_NODE'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function logDefaultPlugins () {
+export function addNewNode (type, parentId, collection) {
   return {
-    type: LOG_DEFAULT_PLUGINS,
-    payload: null
+    type: ADD_NEW_NODE,
+    payload: {
+      type,
+      parentId,
+      collection
+    }
   }
 }
 
 export const actions = {
-  logDefaultPlugins,
+  addNewNode,
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [LOG_DEFAULT_PLUGINS]: (state, action) => {
-    console.log(state.plugins);
-    return state;
+  [ADD_NEW_NODE]: (state, action) => {
+    let s = Object.assign({}, state)
+    const { type, parentId, collection } = action.payload
+    const addNode = (node) => {
+      if(node.$id === parentId) {
+        node[collection].push(config.Defaults.blueprint(type))
+      } else {
+        recursive
+        .map((k) => node[k])
+        .forEach(addNode)
+      }
+    }
+    addNode(s.inContext)
+    return s;
   }
 }
 
