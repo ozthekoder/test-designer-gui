@@ -1,26 +1,22 @@
 import { connect } from 'react-redux'
-import { addNewNode, setContext } from '../modules/editor'
+import { addNewNode } from '../modules/editor'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
     wiring in the actions and state necessary to render a presentational
     component - in this case, the counter:   */
 
-import Editor from 'components/Editor'
+import AddOpMenu from 'components/AddOpMenu'
 
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapActionCreators = {
-  addNewNode,
-  setContext
+  addNewNode
 }
 
 const mapStateToProps = (state) => ({
-  blueprint: state.editor.blueprint,
-  inContext: state.editor.blueprint,
-  plugins: state.editor.plugins
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
@@ -37,4 +33,4 @@ const mapStateToProps = (state) => ({
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default connect(mapStateToProps, mapActionCreators)(Editor)
+export default connect(mapStateToProps, mapActionCreators)(AddOpMenu)

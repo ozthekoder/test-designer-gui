@@ -8,7 +8,7 @@ export const Header = () => (
   <AppBar fixed flat>
     <a className={classes.homeLink} href="/">API Test Designer</a>
     <Navigation className={classes.nav} type="horizontal">
-      <IndexLink to='/' className={classes.route} activeClassName={classes.activeRoute}>Home</IndexLink>
+      <IndexLink to='/' className={classes.route} activeClassName={classes.activeRoute}>Tests</IndexLink>
       <Link to='/edit' className={classes.route} activeClassName={classes.activeRoute}>Create</Link>
     </Navigation>
   </AppBar>

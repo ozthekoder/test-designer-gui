@@ -9,25 +9,42 @@ const recursive = [
   '$after'
 ]
 export const TreeNode = (props) => {
-  const { blueprint, isRoot } = props;
+  const { blueprint, isRoot, path, addNewNode, plugins, inContext, setContext } = props;
   let tree;
   tree = (
-    <li className={classes.branch}>
-    <label htmlFor={blueprint.$id}>{blueprint.$name}</label>
-    <input type="checkbox" id={blueprint.$id} />
+    <li type="$op" className={classes.branch}>
+    <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}</label>
+    <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
     <ol>
     {
       recursive
+      .filter(k => !!blueprint.get(k))
       .map((k, j) => {
-        const ops = blueprint[k] || [];
-        console.log(`${blueprint.$id}.${k}`)
+        const ops = blueprint.get(k) || [];
+        const newPath = [...path, k]
         return (
           <li type={k} className={classes.branch} key={j}>
-            <label htmlFor={`${blueprint.$id}.${k}`}>{k}</label>
-            <input type="checkbox" id={`${blueprint.$id}.${k}`} />
-            <AddOpMenu addNewNode={props.addNewNode} parentId={blueprint.$id} collection={k} plugins={props.plugins}/>
+            <label htmlFor={newPath.join('.')}>{k}</label>
+            <input type="checkbox" id={newPath.join('.')} />
+            <AddOpMenu
+              parentId={blueprint.get('$id')}
+              path={newPath}
+              addNewNode={addNewNode}
+              collection={k}
+              plugins={plugins}
+              />
             <ol>
-              { ops.map((op, i) => <TreeNode blueprint={op} key={i} isRoot={false} />) }
+              {
+                 ops.map((op, i) => <TreeNode
+                                    path={[...newPath, i]}
+                                    inContext={inContext}
+                                    plugins={plugins}
+                                    blueprint={op}
+                                    key={i}
+                                    isRoot={false}
+                                    addNewNode={addNewNode}
+                                    />)
+              }
             </ol>
           </li>
         )
@@ -39,7 +56,7 @@ export const TreeNode = (props) => {
 
   if (isRoot) {
     tree = (
-      <ol className="tree">
+      <ol className={classes.tree}>
       {tree}
       </ol>
     )
@@ -49,7 +66,11 @@ export const TreeNode = (props) => {
 }
 
 TreeNode.propTypes = {
+  isRoot: React.PropTypes.bool.isRequired,
+  inContext: React.PropTypes.object.isRequired,
+  plugins: React.PropTypes.object.isRequired,
   blueprint: React.PropTypes.object.isRequired,
+  addNewNode: React.PropTypes.func.isRequired
 }
 
 export default TreeNode

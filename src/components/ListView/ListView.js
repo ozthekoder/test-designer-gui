@@ -10,7 +10,6 @@ export const ListView = (props) => (
 ListView.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
   plugins: React.PropTypes.object.isRequired,
-  logDefaultPlugins: React.PropTypes.func.isRequired
 }
 
 export default ListView

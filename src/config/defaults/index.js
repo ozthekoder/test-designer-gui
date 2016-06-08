@@ -1,24 +1,23 @@
 import uuid from 'uuid'
+import Hashids from 'hashids'
+import Immutable from 'immutable'
 import plugins from '../plugins';
-
+const hash = new Hashids('ozrulez');
 export default class Defaults {
   static blueprint(type, override = {}) {
+    this.OP_COUNT++;
     switch (type) {
-      case 'single':
-        return Object.assign(this.OP, override, { $id: uuid.v4() })
-      break;
       case 'multiple':
+        return Immutable.fromJS(Object.assign({}, this.OPS, override, { $id: hash.encode(this.OP_COUNT)}))
+      break;
       default:
-        return Object.assign(this.OPS, override, { $id: uuid.v4() })
+        return Immutable.fromJS(Object.assign({}, this.OP, override, { $plugin: type, $id: hash.encode(this.OP_COUNT) }))
       break;
     }
   }
-
-  static operation($plugin, $op='blank', override = {}) {
-    return this.blueprint('single', Object.assign({ $plugin, $op }, override)
-)
-  }
 }
+
+Defaults.OP_COUNT = -1;
 
 Defaults.OP = {
   $name: 'blank',

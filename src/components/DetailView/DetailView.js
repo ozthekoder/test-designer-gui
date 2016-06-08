@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from 'react-toolbox/lib/button';
+import Dropdown from 'react-toolbox/lib/dropdown'
 import classes from './DetailView.scss'
 
 export const DetailView = (props) => (
@@ -10,7 +10,6 @@ export const DetailView = (props) => (
 DetailView.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
   plugins: React.PropTypes.object.isRequired,
-  logDefaultPlugins: React.PropTypes.func.isRequired
 }
 
 export default DetailView

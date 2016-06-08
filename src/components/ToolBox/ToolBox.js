@@ -10,7 +10,6 @@ export const ToolBox = (props) => (
 ToolBox.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
   plugins: React.PropTypes.object.isRequired,
-  logDefaultPlugins: React.PropTypes.func.isRequired
 }
 
 export default ToolBox

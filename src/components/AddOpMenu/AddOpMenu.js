@@ -5,21 +5,23 @@ import { MdAddCircle, MdDone, MdDoneAll } from 'react-icons/lib/md'
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu'
 
 export const AddOpMenu = (props) => {
-  console.log(props);
+  const { path, parentId, collection, addNewNode, plugins } = props;
   return (
-    <IconMenu onSelect={props.addNewNode} icon={<MdAddCircle size="16"/>} position='auto' menuRipple>
+    <IconMenu key={0} onSelect={addNewNode} icon={<MdAddCircle size="14"/>} position='auto' menuRipple>
     {
-      Object
-      .keys(props.plugins)
-      .map((p) => <MenuItem theme={mItemTheme} value={props.plugins[p]} icon={<MdDone size="16"/>} caption={p} />)
+      plugins.keySeq()
+      .map((type, i) => <MenuItem key={i+1} theme={mItemTheme} value={{ path, type }} icon={<MdDone size="16"/>} caption={type} />)
     }
-      <MenuItem theme={mItemTheme} value='multiple' icon={<MdDoneAll size="16"/>} caption='multiple' />
+      <MenuItem theme={mItemTheme} value={{ type: 'multiple', path }} icon={<MdDoneAll size="14"/>} caption='multiple' />
     </IconMenu>
   )
 }
 
 AddOpMenu.propTypes = {
+  parentId: React.PropTypes.string.isRequired,
+  collection: React.PropTypes.string.isRequired,
   plugins: React.PropTypes.object.isRequired,
+  addNewNode: React.PropTypes.func.isRequired
 }
 
 export default AddOpMenu

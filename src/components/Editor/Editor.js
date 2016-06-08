@@ -27,7 +27,9 @@ export const Editor = (props) => (
 
 Editor.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
+  inContext: React.PropTypes.object.isRequired,
   plugins: React.PropTypes.object.isRequired,
+  addNewNode: React.PropTypes.func.isRequired
 }
 
 export default Editor

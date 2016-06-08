@@ -1,4 +1,6 @@
 import config from '../../../config';
+import Immutable from 'immutable'
+
 const recursive = [
   '$before',
   '$beforeEach',
@@ -10,26 +12,35 @@ const recursive = [
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const LOG_DEFAULT_PLUGINS = 'LOG_DEFAULT_PLUGINS'
-export const ADD_NEW_NODE = 'ADD_NODE'
+export const ADD_NEW_NODE = 'ADD_NEW_NODE'
 export const REMOVE_NODE = 'REMOVE_NODE'
+export const SET_CONTEXT = 'SET_CONTEXT'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function addNewNode (type, parentId, collection) {
+export function addNewNode ({ type, path }) {
   return {
     type: ADD_NEW_NODE,
     payload: {
       type,
-      parentId,
-      collection
+      path
+    }
+  }
+}
+
+export function setContext ({ op }) {
+  return {
+    type: ADD_NEW_NODE,
+    payload: {
+      op
     }
   }
 }
 
 export const actions = {
   addNewNode,
+  setContext
 }
 
 // ------------------------------------
@@ -37,27 +48,25 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [ADD_NEW_NODE]: (state, action) => {
-    let s = Object.assign({}, state)
-    const { type, parentId, collection } = action.payload
-    const addNode = (node) => {
-      if(node.$id === parentId) {
-        node[collection].push(config.Defaults.blueprint(type))
-      } else {
-        recursive
-        .map((k) => node[k])
-        .forEach(addNode)
-      }
-    }
-    addNode(s.inContext)
-    return s;
+    const { type, path } = action.payload
+    let b = state.blueprint.toJS()
+    const collection = path.reduce((prev, current) => prev[current], b)
+    collection.push(config.Defaults.blueprint(type))
+    return Object.assign({}, state, {blueprint: Immutable.fromJS(b)})
+  },
+  [SET_CONTEXT]: (state, action) => {
+    const { op } = action.payload
+    return Object.assign({}, state, { inContext: op })
   }
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
+const blueprint = config.Defaults.blueprint('multiple');
 const initialState = {
-  inContext:config.Defaults.blueprint('multiple'),
+  blueprint: blueprint,
+  inContext: blueprint,
   plugins: config.plugins
 }
 

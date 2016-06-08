@@ -10,6 +10,8 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Editor = require('./containers/EditorContainer').default
+      //const AddOpMenu = require('./containers/AddOpMenuContainer').default
+
       const reducer = require('./modules/editor').default
 
       /*  Add the reducer to the store on key 'counter'  */

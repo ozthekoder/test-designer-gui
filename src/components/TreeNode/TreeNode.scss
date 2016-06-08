@@ -3,42 +3,52 @@ input {
 }
 
 .branch {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   list-style-type: none;
   /*color: #fff;*/
   position: relative;
   margin-left: -30px;
   padding: 8px;
 
+  &[type="$op"] {
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.03);
+    border-radius: 3px;
+  }
+
   &[type="$before"] {
-    &, button span {
+    & > div > button > span, & > label {
       color: #6B0C22;
     }
   }
 
   &[type="$beforeEach"] {
-    &, button span {
+    & > div > button > span, & > label {
       color: #D9042B;
     }
   }
 
   &[type="$ops"] {
-    &, button span {
+    & > div > button > span, & > label {
       color: #8364F4;
     }
   }
 
   &[type="$after"] {
-    &, button span {
+    & > div > button > span, & > label {
       color: #588C8C;
     }
   }
 
   &[type="$afterEach"] {
-    &, button span {
+    & > div > button > span, & > label {
       color: #011C26;
     }
   }
+}
+
+.tree {
+  margin-right: 1.0rem;
 }
 
 .branch label {
@@ -49,8 +59,8 @@ input {
 }
 
 .branch input {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.2rem;
+  height: 1.2rem;
   position: absolute;
   left: 0.8rem;
   top: 1.9rem;  opacity: 0;
