@@ -60,14 +60,16 @@ export const actions = {
 const ACTION_HANDLERS = {
   [ADD_NEW_NODE]: (state, action) => {
     const { type, path } = action.payload
-    let b = state.blueprint.toJS()
-    const collection = path.reduce((prev, current) => prev[current], b)
-    collection.push(config.Defaults.blueprint(type))
-    return Object.assign({}, state, {blueprint: Immutable.fromJS(b)})
+    const s = { ...state }
+    const merge = Immutable.List([config.Defaults.blueprint(type)]);
+    const { blueprint, inContext } = s
+    s.blueprint = blueprint.mergeIn(path, merge)
+    console.log(s.blueprint.toJS())
+    return s
   },
   [SET_CONTEXT]: (state, action) => {
     const { path } = action.payload
-    const s = Object.assign({}, state);
+    const s = { ...state };
     s.inContext = [...path];
     return s
   },
@@ -75,7 +77,7 @@ const ACTION_HANDLERS = {
     const { name } = action.payload
     const s = { ...state }
     const { blueprint, inContext } = s
-    s.blueprint = s.blueprint.setIn([...inContext, '$name'], name)
+    s.blueprint = blueprint.setIn([...inContext, '$name'], name)
     return s
   }
 
