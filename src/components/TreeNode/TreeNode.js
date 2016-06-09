@@ -12,11 +12,11 @@ export const TreeNode = (props) => {
   const { blueprint, isRoot, path, addNewNode, plugins, inContext, setContext } = props;
   let tree;
   tree = (
-    <li type="$op" className={classes.branch}>
-    <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}</label>
-    <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
-    <ol>
-    {
+    <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
+      <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}</label>
+      <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
+      <ol>
+      {
       recursive
       .filter(k => !!blueprint.get(k))
       .map((k, j) => {
@@ -43,14 +43,15 @@ export const TreeNode = (props) => {
                                     key={i}
                                     isRoot={false}
                                     addNewNode={addNewNode}
+                                    setContext={setContext}
                                     />)
               }
             </ol>
           </li>
         )
       })
-    }
-    </ol>
+      }
+      </ol>
     </li>
   )
 
@@ -67,7 +68,7 @@ export const TreeNode = (props) => {
 
 TreeNode.propTypes = {
   isRoot: React.PropTypes.bool.isRequired,
-  inContext: React.PropTypes.object.isRequired,
+  inContext: React.PropTypes.array.isRequired,
   plugins: React.PropTypes.object.isRequired,
   blueprint: React.PropTypes.object.isRequired,
   addNewNode: React.PropTypes.func.isRequired

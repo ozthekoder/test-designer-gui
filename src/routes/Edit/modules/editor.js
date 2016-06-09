@@ -15,6 +15,7 @@ const recursive = [
 export const ADD_NEW_NODE = 'ADD_NEW_NODE'
 export const REMOVE_NODE = 'REMOVE_NODE'
 export const SET_CONTEXT = 'SET_CONTEXT'
+export const SET_OP_NAME = 'SET_OP_NAME'
 
 // ------------------------------------
 // Actions
@@ -29,18 +30,28 @@ export function addNewNode ({ type, path }) {
   }
 }
 
-export function setContext ({ op }) {
+export function setContext (path) {
   return {
-    type: ADD_NEW_NODE,
+    type: SET_CONTEXT,
     payload: {
-      op
+      path
+    }
+  }
+}
+
+export function setOpName (name) {
+  return {
+    type: SET_OP_NAME,
+    payload: {
+      name
     }
   }
 }
 
 export const actions = {
   addNewNode,
-  setContext
+  setContext,
+  setOpName
 }
 
 // ------------------------------------
@@ -55,9 +66,19 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, {blueprint: Immutable.fromJS(b)})
   },
   [SET_CONTEXT]: (state, action) => {
-    const { op } = action.payload
-    return Object.assign({}, state, { inContext: op })
+    const { path } = action.payload
+    const s = Object.assign({}, state);
+    s.inContext = [...path];
+    return s
+  },
+  [SET_OP_NAME]: (state, action) => {
+    const { name } = action.payload
+    const s = { ...state }
+    const { blueprint, inContext } = s
+    s.blueprint = s.blueprint.setIn([...inContext, '$name'], name)
+    return s
   }
+
 }
 
 // ------------------------------------
@@ -65,10 +86,10 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const blueprint = config.Defaults.blueprint('multiple');
 const initialState = {
-  blueprint: blueprint,
-  inContext: blueprint,
+  blueprint,
+  inContext: [],
   plugins: config.plugins
-}
+};
 
 export default function editorReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

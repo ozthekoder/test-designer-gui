@@ -46,3 +46,32 @@ Defaults.OPS = {
   $afterEach: [],
   $after: []
 }
+
+Defaults.KEYS = {
+  "$id": "string",
+  "$log": "string",
+  "$name": "string",
+  "$before": "array",
+  "$beforeEach": "array",
+  "$afterEach": "array",
+  "$plugin": "string",
+  "$op": "string",
+  "$skip": "boolean",
+  "$halt": "boolean",
+  "$ops": "array",
+  "$args": "array",
+  "$payload": {
+    "$expect": {
+      "$value": "number|string|array|object",
+      "$assert": "string",
+      "$log": "string"
+    },
+    "$save": "string|object",
+    "$waitFor": {
+      "$value": "number|string|object",
+      "$log": "string"
+    }
+  },
+  "$timeout": "number",
+  "$after": "array"
+}

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { addNewNode, setContext } from '../modules/editor'
+import { addNewNode, setContext, setOpName } from '../modules/editor'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -14,12 +14,13 @@ import Editor from 'components/Editor'
 
 const mapActionCreators = {
   addNewNode,
-  setContext
+  setContext,
+  setOpName
 }
 
 const mapStateToProps = (state) => ({
   blueprint: state.editor.blueprint,
-  inContext: state.editor.blueprint,
+  inContext: state.editor.inContext,
   plugins: state.editor.plugins
 })
 

@@ -4,15 +4,11 @@ import TreeNode from '../TreeNode';
 
 export const TreeView = (props) => (
   <div className='column'>
-    <TreeNode path={[]} isRoot={true} {...props} />
+    <TreeNode {...props} path={[]} isRoot={true} />
   </div>
 )
 
 TreeView.propTypes = {
-  blueprint: React.PropTypes.object.isRequired,
-  inContext: React.PropTypes.object.isRequired,
-  plugins: React.PropTypes.object.isRequired,
-  addNewNode: React.PropTypes.func.isRequired
 }
 
 export default TreeView
