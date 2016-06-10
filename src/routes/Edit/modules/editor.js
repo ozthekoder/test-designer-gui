@@ -16,6 +16,7 @@ export const ADD_NEW_NODE = 'ADD_NEW_NODE'
 export const REMOVE_NODE = 'REMOVE_NODE'
 export const SET_CONTEXT = 'SET_CONTEXT'
 export const SET_OP_NAME = 'SET_OP_NAME'
+export const SET_OP_ATTRIBUTE = 'SET_OP_ATTRIBUTE'
 
 // ------------------------------------
 // Actions
@@ -48,10 +49,21 @@ export function setOpName (name) {
   }
 }
 
+export function setOpAttribute (attribute, value) {
+  return {
+    type: SET_OP_ATTRIBUTE,
+    payload: {
+      attribute,
+      value
+    }
+  }
+}
+
 export const actions = {
   addNewNode,
   setContext,
-  setOpName
+  setOpName,
+  setOpAttribute
 }
 
 // ------------------------------------
@@ -64,7 +76,6 @@ const ACTION_HANDLERS = {
     const merge = Immutable.List([config.Defaults.blueprint(type)]);
     const { blueprint, inContext } = s
     s.blueprint = blueprint.mergeIn(path, merge)
-    console.log(s.blueprint.toJS())
     return s
   },
   [SET_CONTEXT]: (state, action) => {
@@ -79,8 +90,14 @@ const ACTION_HANDLERS = {
     const { blueprint, inContext } = s
     s.blueprint = blueprint.setIn([...inContext, '$name'], name)
     return s
+  },
+  [SET_OP_ATTRIBUTE]: (state, action) => {
+    const { attribute, value } = action.payload
+    const s = { ...state }
+    const { blueprint, inContext } = s
+    s.blueprint = blueprint.setIn([...inContext, attribute], value)
+    return s
   }
-
 }
 
 // ------------------------------------

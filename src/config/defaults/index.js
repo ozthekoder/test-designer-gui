@@ -20,14 +20,14 @@ export default class Defaults {
 Defaults.OP_COUNT = -1;
 
 Defaults.OP = {
-  $name: 'blank',
-  $log: 'blank',
+  $name: '',
+  $log: '',
   $skip: false,
   $halt: false,
   $before: [],
   $beforeEach: [],
-  $plugin: 'blank',
-  $op: 'blank',
+  $plugin: '',
+  $op: '',
   $timeout: 5000,
   $args: [],
   $payload: {},
@@ -36,8 +36,8 @@ Defaults.OP = {
 }
 
 Defaults.OPS = {
-  $name: 'blank',
-  $log: 'blank',
+  $name: '',
+  $log: '',
   $skip: false,
   $halt: false,
   $before: [],

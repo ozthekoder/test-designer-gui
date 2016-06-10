@@ -9,7 +9,8 @@ export const AddOpMenu = (props) => {
   return (
     <IconMenu key={0} onSelect={addNewNode} icon={<MdAddCircle size="14"/>} position='auto' menuRipple>
     {
-      plugins.keySeq()
+      Object
+      .keys(plugins)
       .map((type, i) => <MenuItem key={i+1} theme={mItemTheme} value={{ path, type }} icon={<MdDone size="16"/>} caption={type} />)
     }
       <MenuItem theme={mItemTheme} value={{ type: 'multiple', path }} icon={<MdDoneAll size="14"/>} caption='multiple' />

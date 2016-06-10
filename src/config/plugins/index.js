@@ -3,8 +3,8 @@ import wait from './wait.json'
 import http from './http.json'
 import kafka from './kafka.json'
 
-export default Immutable.fromJS({
+export default {
   wait,
   http,
   kafka
-})
+}
