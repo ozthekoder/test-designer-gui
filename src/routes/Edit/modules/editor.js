@@ -15,7 +15,6 @@ const recursive = [
 export const ADD_NEW_NODE = 'ADD_NEW_NODE'
 export const REMOVE_NODE = 'REMOVE_NODE'
 export const SET_CONTEXT = 'SET_CONTEXT'
-export const SET_OP_NAME = 'SET_OP_NAME'
 export const SET_OP_ATTRIBUTE = 'SET_OP_ATTRIBUTE'
 
 // ------------------------------------
@@ -40,15 +39,6 @@ export function setContext (path) {
   }
 }
 
-export function setOpName (name) {
-  return {
-    type: SET_OP_NAME,
-    payload: {
-      name
-    }
-  }
-}
-
 export function setOpAttribute (attribute, value) {
   return {
     type: SET_OP_ATTRIBUTE,
@@ -62,7 +52,6 @@ export function setOpAttribute (attribute, value) {
 export const actions = {
   addNewNode,
   setContext,
-  setOpName,
   setOpAttribute
 }
 
@@ -84,18 +73,12 @@ const ACTION_HANDLERS = {
     s.inContext = [...path];
     return s
   },
-  [SET_OP_NAME]: (state, action) => {
-    const { name } = action.payload
-    const s = { ...state }
-    const { blueprint, inContext } = s
-    s.blueprint = blueprint.setIn([...inContext, '$name'], name)
-    return s
-  },
   [SET_OP_ATTRIBUTE]: (state, action) => {
     const { attribute, value } = action.payload
+    const attr = Array.isArray(attribute) ? attribute : [attribute]
     const s = { ...state }
     const { blueprint, inContext } = s
-    s.blueprint = blueprint.setIn([...inContext, attribute], value)
+    s.blueprint = blueprint.setIn([...inContext, ...attr], value)
     return s
   }
 }
