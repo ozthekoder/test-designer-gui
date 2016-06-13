@@ -62,9 +62,9 @@ const ACTION_HANDLERS = {
   [ADD_NEW_NODE]: (state, action) => {
     const { type, path } = action.payload
     const s = { ...state }
-    const merge = Immutable.List([config.Defaults.blueprint(type)]);
+    const toAdd = config.Defaults.blueprint(type);
     const { blueprint, inContext } = s
-    s.blueprint = blueprint.mergeIn(path, merge)
+    s.blueprint = blueprint.updateIn(path, Immutable.List(), (list) => list.push(toAdd))
     return s
   },
   [SET_CONTEXT]: (state, action) => {

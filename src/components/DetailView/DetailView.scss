@@ -1,3 +1,27 @@
 section {
   padding: 8px;
+
+  textarea {
+    min-height:40px;
+  }
+
 }
+
+.argumentBox {
+  padding: 1rem 0 1rem;
+}
+
+.argumentLabel {
+  font-size: 1.6rem;
+  display:block;
+  padding: 0 0 1rem;
+  & > span {
+    padding: 8px 0;
+    display: inline-block;
+  }
+  button {
+    float: right;
+    margin-left: 4px;
+  }
+}
+
