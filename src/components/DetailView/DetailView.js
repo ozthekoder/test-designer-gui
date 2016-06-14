@@ -1,19 +1,22 @@
 import React from 'react'
+import Immutable from 'immutable'
 import config from '../../config'
 import Dropdown from 'react-toolbox/lib/dropdown'
 import Input from 'react-toolbox/lib/input'
 import Switch from 'react-toolbox/lib/switch'
-import {Button} from 'react-toolbox/lib/button'
-import Chip from 'react-toolbox/lib/chip'
+import { Button, IconButton } from 'react-toolbox/lib/button'
+import Chip from 'react-toolbox/lib/chip';
 import {Tab, Tabs} from 'react-toolbox'
+import { generateAssertions } from '../../util'
 import classes from './DetailView.scss'
+import chipTheme from './chip.scss'
 import brace from 'brace'
 import AceEditor from 'react-ace'
+import { MdDelete } from 'react-icons/lib/md'
 import 'brace/mode/json'
 import 'brace/theme/github'
-import IntegrationTester from 'integration-tester'
 const { Defaults, plugins } = config
-console.log(IntegrationTester.Utility);
+
 export class DetailView extends React.Component {
   constructor(props) {
     super(props)
@@ -27,6 +30,10 @@ export class DetailView extends React.Component {
     this.setState({ payloadTabIndex: index })
   }
 
+  updatePayload(payload) {
+    this.setState({ payload })
+  }
+
   onAceChange(path, v) {
     let val = v;
     try {
@@ -37,12 +44,16 @@ export class DetailView extends React.Component {
 
   generateAssertions() {
     const { payload } = this.state
-
+    const assertions = generateAssertions(JSON.parse(payload));
+    this.props.setOpAttribute(['$payload', '$expect'], Immutable.fromJS(assertions));
   }
 
+  removeAssertion(path) {
+    this.props.setOpAttribute(path, null);
+  }
   render() {
     const path = this.props.inContext;
-    const blueprint = this.props.blueprint
+    const blueprint = this.props.blueprint.asMutable()
     const context = !path.length ? blueprint : path.reduce((prev, current) => prev.get(current), blueprint)
     const plugin = context.get('$plugin')
     const operations = plugin ? Object.keys(plugins[plugin]) : []
@@ -119,10 +130,27 @@ export class DetailView extends React.Component {
               theme="github"
               editorProps={{$blockScrolling: true}}
               value={this.state.payload}
+              onChange={this.updatePayload.bind(this)}
               />
             </Tab>
             <Tab label='Assertions'>
-              <Button onClick={this.generateAssertions.bind(this)}label='Regenerate' accent />
+            <div>
+              <Button onClick={this.generateAssertions.bind(this)} label='Regenerate' accent />
+            </div>
+            <div style={{ marginTop: '8px' }}>
+              {
+                context
+                .getIn(['$payload', '$expect'], Immutable.List())
+                .map((assertion, index) => {
+                  return (
+                    <Chip theme={chipTheme}>
+                      {`${assertion.get('$path').join('.')} should be ${assertion.get('$assert')} to ${assertion.get('$value')}`}
+                      <IconButton onClick={this.removeAssertion.bind(this, ['$payload', '$expect', index])} icon={<MdDelete size="24" />} />
+                    </Chip>
+                  )
+              })
+              }
+            </div>
             </Tab>
             <Tab label='References'>
             </Tab>
@@ -157,6 +185,7 @@ export class DetailView extends React.Component {
     )
   }
 }
+
 DetailView.propTypes = {
   inContext: React.PropTypes.array.isRequired,
   blueprint: React.PropTypes.object.isRequired,

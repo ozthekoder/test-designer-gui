@@ -78,7 +78,12 @@ const ACTION_HANDLERS = {
     const attr = Array.isArray(attribute) ? attribute : [attribute]
     const s = { ...state }
     const { blueprint, inContext } = s
+    if(value) {
     s.blueprint = blueprint.setIn([...inContext, ...attr], value)
+    } else {
+    s.blueprint = blueprint.deleteIn([...inContext, ...attr])
+
+    }
     return s
   }
 }

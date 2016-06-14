@@ -1,0 +1,16 @@
+.chip {
+  display: block;
+  margin: 0 0 8px 0;
+  button {
+    span {
+      color: red;
+    }
+    float: right;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.delete {
+  margin: 0;
+}
