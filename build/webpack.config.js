@@ -32,7 +32,7 @@ webpackConfig.entry = {
   app: __DEV__
     ? APP_ENTRY_PATHS.concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
     : APP_ENTRY_PATHS,
-  vendor: config.compiler_vendor
+    vendor: config.compiler_vendor
 }
 
 // ------------------------------------
@@ -95,25 +95,25 @@ if (!__TEST__) {
 // Pre-Loaders
 // ------------------------------------
 /*
-[ NOTE ]
-We no longer use eslint-loader due to it severely impacting build
-times for larger projects. `npm run lint` still exists to aid in
-deploy processes (such as with CI), and it's recommended that you
-use a linting plugin for your IDE in place of this loader.
+   [ NOTE ]
+   We no longer use eslint-loader due to it severely impacting build
+   times for larger projects. `npm run lint` still exists to aid in
+   deploy processes (such as with CI), and it's recommended that you
+   use a linting plugin for your IDE in place of this loader.
 
-If you do wish to continue using the loader, you can uncomment
-the code below and run `npm i --save-dev eslint-loader`. This code
-will be removed in a future release.
+   If you do wish to continue using the loader, you can uncomment
+   the code below and run `npm i --save-dev eslint-loader`. This code
+   will be removed in a future release.
 
-webpackConfig.module.preLoaders = [{
-  test: /\.(js|jsx)$/,
-  loader: 'eslint',
-  exclude: /node_modules/
+   webpackConfig.module.preLoaders = [{
+test: /\.(js|jsx)$/,
+loader: 'eslint',
+exclude: /node_modules/
 }]
 
 webpackConfig.eslint = {
-  configFile: paths.base('.eslintrc'),
-  emitWarning: __DEV__
+configFile: paths.base('.eslintrc'),
+emitWarning: __DEV__
 }
 */
 
@@ -264,18 +264,18 @@ webpackConfig.module.loaders.push(
 if (!__DEV__) {
   debug('Apply ExtractTextPlugin to CSS loaders.')
   webpackConfig.module.loaders.filter((loader) =>
-    loader.loaders && loader.loaders.find((name) => /css/.test(name.split('?')[0]))
-  ).forEach((loader) => {
-    const [first, ...rest] = loader.loaders
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
-    Reflect.deleteProperty(loader, 'loaders')
-  })
+                                      loader.loaders && loader.loaders.find((name) => /css/.test(name.split('?')[0]))
+                                     ).forEach((loader) => {
+                                       const [first, ...rest] = loader.loaders
+                                       loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
+                                       Reflect.deleteProperty(loader, 'loaders')
+                                     })
 
-  webpackConfig.plugins.push(
-    new ExtractTextPlugin('[name].[contenthash].css', {
-      allChunks: true
-    })
-  )
+                                     webpackConfig.plugins.push(
+                                       new ExtractTextPlugin('[name].[contenthash].css', {
+                                         allChunks: true
+                                       })
+                                     )
 }
 
 export default webpackConfig

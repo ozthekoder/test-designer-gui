@@ -4,31 +4,40 @@ import Dropdown from 'react-toolbox/lib/dropdown'
 import Input from 'react-toolbox/lib/input'
 import Switch from 'react-toolbox/lib/switch'
 import {Button} from 'react-toolbox/lib/button'
+import Chip from 'react-toolbox/lib/chip'
 import {Tab, Tabs} from 'react-toolbox'
 import classes from './DetailView.scss'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import 'brace/mode/json'
 import 'brace/theme/github'
+import IntegrationTester from 'integration-tester'
 const { Defaults, plugins } = config
-
+console.log(IntegrationTester.Utility);
 export class DetailView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      payloadTabIndex: 0
+      payloadTabIndex: 0,
+      payload : ''
     }
   }
 
   onPayloadTabChange(index) {
     this.setState({ payloadTabIndex: index })
   }
+
   onAceChange(path, v) {
     let val = v;
     try {
       val = JSON.parse(val)
     } catch(e) {}
     this.props.setOpAttribute(path, val)
+  }
+
+  generateAssertions() {
+    const { payload } = this.state
+
   }
 
   render() {
@@ -55,6 +64,8 @@ export class DetailView extends React.Component {
       /> : null
     )
     let args = [];
+    let payload = null
+
     if (op) {
       const currentOp = plugins[plugin][op]
       args = Object
@@ -95,28 +106,32 @@ export class DetailView extends React.Component {
           )
         }
       })
+
+      payload = (
+        <div className={classes.argumentBox}>
+          <Tabs index={this.state.payloadTabIndex} onChange={this.onPayloadTabChange.bind(this)}>
+            <Tab label='Payload'>
+              <AceEditor
+              name="payload"
+              minLines={20}
+              maxLines={250}
+              mode="json"
+              theme="github"
+              editorProps={{$blockScrolling: true}}
+              value={this.state.payload}
+              />
+            </Tab>
+            <Tab label='Assertions'>
+              <Button onClick={this.generateAssertions.bind(this)}label='Regenerate' accent />
+            </Tab>
+            <Tab label='References'>
+            </Tab>
+          </Tabs>
+        </div>
+      )
+
     }
 
-    const payload = (
-      <div className={classes.argumentBox}>
-        <Tabs index={this.state.payloadTabIndex} onChange={this.onPayloadTabChange.bind(this)}>
-        <Tab label='Payload'>
-          <AceEditor
-            name="payload"
-            minLines={20}
-            maxLines={250}
-            mode="json"
-            theme="github"
-            editorProps={{$blockScrolling: true}}
-          />
-        </Tab>
-        <Tab label='Assertions'>
-        </Tab>
-        <Tab label='References'>
-        </Tab>
-        </Tabs>
-        </div>
-    )
     return (
       <div className='box'>
       <div className='column'>
