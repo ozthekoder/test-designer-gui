@@ -1,5 +1,7 @@
 import React from 'react'
 import classes from './TreeNode.scss'
+import {Button, IconButton} from 'react-toolbox/lib/button'
+import { MdHighlightRemove } from 'react-icons/lib/md'
 import AddOpMenu from '../AddOpMenu'
 const recursive = [
   '$before',
@@ -9,11 +11,11 @@ const recursive = [
   '$after'
 ]
 export const TreeNode = (props) => {
-  const { blueprint, isRoot, path, addNewNode, plugins, inContext, setContext } = props;
+  const { blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext } = props;
   let tree;
   tree = (
     <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
-      <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}</label>
+      <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}<MdHighlightRemove size="16" style={ { 'float': 'right'  } } onClick={(e) => {e.stopPropagation(); props.setOpAttribute(path)}}/></label>
       <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
       <ol>
       {
@@ -43,6 +45,7 @@ export const TreeNode = (props) => {
                                     key={i}
                                     isRoot={false}
                                     addNewNode={addNewNode}
+                                    setOpAttribute={setOpAttribute}
                                     setContext={setContext}
                                     />)
               }
