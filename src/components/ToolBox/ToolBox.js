@@ -5,7 +5,7 @@ import Dialog from 'react-toolbox/lib/dialog'
 import Switch from 'react-toolbox/lib/switch'
 import Input from 'react-toolbox/lib/input'
 import {Button, IconButton} from 'react-toolbox/lib/button'
-import { FaDownload } from 'react-icons/lib/fa'
+import { FaDownload, FaUpload } from 'react-icons/lib/fa'
 import { MdSettingsApplications } from 'react-icons/lib/md'
 import brace from 'brace'
 import AceEditor from 'react-ace'
@@ -17,7 +17,9 @@ class ToolBox extends React.Component {
     super(props)
     this.state = {
       configModalActive: false,
-      newPlugin: ''
+      uploadModalActive: false,
+      newPlugin: '',
+      uploadedJSON: ''
     }
   }
 
@@ -26,15 +28,31 @@ class ToolBox extends React.Component {
     this.setState({ configModalActive: !active })
   }
 
+  toggleUploadModal() {
+    const active = this.state.uploadModalActive
+    this.setState({ uploadModalActive: !active })
+  }
+
   updateNewPlugin(newPlugin) {
     this.setState({
       newPlugin
     })
   }
 
+  updateUploadedJSON(uploadedJSON) {
+    this.setState({
+      uploadedJSON
+    })
+  }
+
   addPlugin() {
     this.props.addPlugin(JSON.parse(this.state.newPlugin));
   }
+
+  uploadBlueprint() {
+    this.props.uploadJSON(JSON.parse(this.state.uploadedJSON));
+  }
+
   render() {
     const newPluginEditor = (
       <div>
@@ -74,6 +92,35 @@ class ToolBox extends React.Component {
     return (
       <div className='column'>
       <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaDownload size="32"/>} href={`data:text/json;charset=utf-8, ${encodeURIComponent(JSON.stringify({ config: this.props.config.toJS(), test: this.props.blueprint.toJS()}, null, 2))}`} download={`test_bp_${this.props.blueprint.get('$id')}.json`} />
+      <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaUpload size="32" />} href="" onClick={(e) => { e.preventDefault(); this.toggleUploadModal() }}/>
+      <Dialog
+      name="upload_json"
+      actions={
+            [
+              { label: "Done", onClick: this.toggleUploadModal.bind(this) }
+            ]
+          }
+          active={this.state.uploadModalActive}
+          onEscKeyDown={this.toggleUploadModal.bind(this)}
+          onOverlayClick={this.toggleUploadModal.bind(this)}
+          title='Upload Blueprint'
+        >
+        <section>
+          <div>
+          <Button onClick={this.uploadBlueprint.bind(this)} label='Upload' accent />
+          </div>
+          <AceEditor
+            name="new_plugin"
+            minLines={20}
+            maxLines={250}
+            mode="json"
+            theme="github"
+            editorProps={{$blockScrolling: true}}
+            value={this.state.uploadedJSON}
+            onChange={this.updateUploadedJSON.bind(this)}
+          />
+        </section>
+      </Dialog>
       <Link style={{ margin: '1rem 0 0 1rem' }} icon={<MdSettingsApplications size="32" />} href="" onClick={(e) => { e.preventDefault(); this.toggleConfigModal() }}/>
       <Dialog
       actions={[

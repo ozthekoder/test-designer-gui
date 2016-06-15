@@ -67,13 +67,14 @@ class ListView extends React.Component {
   }
 
   render(){
+    const flat = this.flatten([], this.props.blueprint)
+    console.log(flat.toJS());
     return (
       <div className='box'>
         <div className="column">
         <List selectable ripple>
         {
-         this
-         .flatten([], this.props.blueprint)
+          flat
          .map((op, i) => <span><ListItem key={i} onClick={this.props.setContext.bind(null, op.get('$path'))} caption={op.get('$name')} legend={`${op.get('$plugin')}.${op.get('$op')}`} /><ListDivider /></span>)
         }
         </List>

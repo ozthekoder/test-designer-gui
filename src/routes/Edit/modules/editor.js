@@ -19,6 +19,7 @@ export const SET_OP_ATTRIBUTE = 'SET_OP_ATTRIBUTE'
 export const UPDATE_CONFIG = 'UPDATE_CONFIG'
 export const TOGGLE_PLUGIN = 'TOGGLE_PLUGIN'
 export const ADD_PLUGIN = 'ADD_PLUGIN'
+export const UPLOAD_JSON = 'UPLOAD_JSON'
 
 
 
@@ -83,12 +84,22 @@ export function addPlugin (plugin) {
   }
 }
 
+export function uploadJSON (json) {
+  return {
+    type: UPLOAD_JSON,
+    payload: {
+      json
+    }
+  }
+}
+
 export const actions = {
   addNewNode,
   setContext,
   setOpAttribute,
   updateConfig,
-  addPlugin
+  addPlugin,
+  uploadJSON
 }
 
 // ------------------------------------
@@ -138,10 +149,16 @@ const ACTION_HANDLERS = {
     const { plugin } = action.payload
     const s = { ...state }
     s.plugins = s.plugins.set(plugin.$plugin_name, Immutable.fromJS(plugin))
-    console.log(s.plugins.toJS())
+    return s;
+  },
+  [UPLOAD_JSON]: (state, action) => {
+    const { json } = action.payload
+    const s = { ...state }
+    s.blueprint = Immutable.fromJS(json.test)
+    s.config = Immutable.fromJS(json.config)
+    s.inContext = []
     return s;
   }
-
 }
 
 // ------------------------------------
