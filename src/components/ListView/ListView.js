@@ -68,7 +68,6 @@ class ListView extends React.Component {
 
   render(){
     const flat = this.flatten([], this.props.blueprint)
-    console.log(flat.toJS());
     return (
       <div className='box'>
         <div className="column">

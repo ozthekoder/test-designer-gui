@@ -1,3 +1,5 @@
+import Immutable from 'immutable'
+
 export function debounce(fn, delay) {
   var timer = null;
   return function () {
@@ -62,3 +64,6 @@ export function getAllAssertions(actual, expectation) {
   return tests;
 };
 
+export function getLookupList (list=Immutable.List(), blueprint) {
+  return;
+}
