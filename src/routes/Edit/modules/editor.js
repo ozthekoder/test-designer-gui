@@ -54,11 +54,12 @@ export function setOpAttribute (attribute, value) {
   }
 }
 
-export function updateConfig (newConfig) {
+export function updateConfig (path, value) {
   return {
     type: UPDATE_CONFIG,
     payload: {
-      newConfig
+      path,
+      value
     }
   }
 }
@@ -122,8 +123,10 @@ const ACTION_HANDLERS = {
     return s
   },
   [UPDATE_CONFIG]: (state, action) => {
-    const { newConfig } = action.payload
-    console.log(newConfig);
+    const { path, value } = action.payload
+    const s = { ...state }
+    s.config = state.config.setIn(path, value)
+    return s;
   },
   [TOGGLE_PLUGIN]: (state, action) => {
     const { plugin, value } = action.payload

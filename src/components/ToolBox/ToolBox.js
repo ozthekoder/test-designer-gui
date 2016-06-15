@@ -38,28 +38,46 @@ class ToolBox extends React.Component {
   render() {
     const newPluginEditor = (
       <div>
-            <h3>New Plugin <Button onClick={this.addPlugin.bind(this)} style={{ 'float': 'right', margin: '4px' }} icon='add' label='Add' accent />
+        <h3>New Plugin <Button onClick={this.addPlugin.bind(this)} style={{ 'float': 'right', margin: '4px' }} icon='add' label='Add' accent />
 </h3>
-            <AceEditor
-            name="new_plugin"
-            minLines={20}
-            maxLines={250}
-            mode="json"
-            theme="github"
-            editorProps={{$blockScrolling: true}}
-            value={this.state.newPlugin}
-            onChange={this.updateNewPlugin.bind(this)}
-            />
+        <AceEditor
+          name="new_plugin"
+          minLines={20}
+          maxLines={250}
+          mode="json"
+          theme="github"
+          editorProps={{$blockScrolling: true}}
+          value={this.state.newPlugin}
+          onChange={this.updateNewPlugin.bind(this)}
+        />
       </div>
     )
 
+    const pluginConfigs = this.props.config
+    .get('plugins')
+    .map((plugin, key) => (
+      <div>
+      <h2>{key}</h2>
+      {
+        plugin
+        .filter((p, key) => key !== 'file')
+        .filter((p, key) => key !== 'topics')
+        .map((val, k) => (
+          <Input type='text' label={k} name={`${key}.${k}`} value={val} onChange={this.props.updateConfig.bind(null, ['plugins', key, k])} />
+        ))
+
+      }
+      </div>
+
+    ))
+
     return (
       <div className='column'>
-      <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaDownload size="32"/>} href={`data:text/json;charset=utf-8, ${encodeURIComponent(JSON.stringify(this.props.blueprint.toJS(), null, 2))}`} download={`test_bp_${this.props.blueprint.get('$id')}.json`} />
+      <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaDownload size="32"/>} href={`data:text/json;charset=utf-8, ${encodeURIComponent(JSON.stringify({ config: this.props.config.toJS(), test: this.props.blueprint.toJS()}, null, 2))}`} download={`test_bp_${this.props.blueprint.get('$id')}.json`} />
       <Link style={{ margin: '1rem 0 0 1rem' }} icon={<MdSettingsApplications size="32" />} href="" onClick={(e) => { e.preventDefault(); this.toggleConfigModal() }}/>
-       <Dialog
-          actions={[
-              { label: "Close", onClick: this.toggleConfigModal.bind(this) }
+      <Dialog
+      actions={[
+        { label: "Close", onClick: this.toggleConfigModal.bind(this) }
             ]}
           active={this.state.configModalActive}
           onEscKeyDown={this.toggleConfigModal.bind(this)}
@@ -78,6 +96,7 @@ class ToolBox extends React.Component {
             )
           }
           {newPluginEditor}
+          {pluginConfigs}
         </section>
         </Dialog>
       </div>
