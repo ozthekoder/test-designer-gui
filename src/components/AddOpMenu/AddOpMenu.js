@@ -6,14 +6,16 @@ import { IconMenu, MenuItem } from 'react-toolbox/lib/menu'
 
 export const AddOpMenu = (props) => {
   const { path, parentId, collection, addNewNode, plugins } = props;
+  let i=0;
+
   return (
     <IconMenu key={0} onSelect={addNewNode} icon={<MdAddCircle size="14"/>} position='auto' menuRipple>
     {
-      Object
-      .keys(plugins)
-      .map((type, i) => <MenuItem key={i+1} theme={mItemTheme} value={{ path, type }} icon={<MdDone size="16"/>} caption={type} />)
+      plugins
+      .filter((p) => !!p.get('$active'))
+      .map((val, type) => <MenuItem key={i++} theme={mItemTheme} value={{ path, type }} icon={<MdDone size="16"/>} caption={type} />)
     }
-      <MenuItem theme={mItemTheme} value={{ type: 'multiple', path }} icon={<MdDoneAll size="14"/>} caption='multiple' />
+    <MenuItem theme={mItemTheme} value={{ type: 'multiple', path }} icon={<MdDoneAll size="14"/>} caption='multiple' />
     </IconMenu>
   )
 }

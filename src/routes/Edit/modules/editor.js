@@ -16,6 +16,11 @@ export const ADD_NEW_NODE = 'ADD_NEW_NODE'
 export const REMOVE_NODE = 'REMOVE_NODE'
 export const SET_CONTEXT = 'SET_CONTEXT'
 export const SET_OP_ATTRIBUTE = 'SET_OP_ATTRIBUTE'
+export const UPDATE_CONFIG = 'UPDATE_CONFIG'
+export const TOGGLE_PLUGIN = 'TOGGLE_PLUGIN'
+export const ADD_PLUGIN = 'ADD_PLUGIN'
+
+
 
 // ------------------------------------
 // Actions
@@ -49,10 +54,40 @@ export function setOpAttribute (attribute, value) {
   }
 }
 
+export function updateConfig (newConfig) {
+  return {
+    type: UPDATE_CONFIG,
+    payload: {
+      newConfig
+    }
+  }
+}
+
+export function togglePlugin (plugin, value) {
+  return {
+    type: TOGGLE_PLUGIN,
+    payload: {
+      plugin,
+      value
+    }
+  }
+}
+
+export function addPlugin (plugin) {
+  return {
+    type: ADD_PLUGIN,
+    payload: {
+      plugin
+    }
+  }
+}
+
 export const actions = {
   addNewNode,
   setContext,
-  setOpAttribute
+  setOpAttribute,
+  updateConfig,
+  addPlugin
 }
 
 // ------------------------------------
@@ -85,7 +120,25 @@ const ACTION_HANDLERS = {
 
     }
     return s
+  },
+  [UPDATE_CONFIG]: (state, action) => {
+    const { newConfig } = action.payload
+    console.log(newConfig);
+  },
+  [TOGGLE_PLUGIN]: (state, action) => {
+    const { plugin, value } = action.payload
+    const s = { ...state }
+    s.plugins = s.plugins.setIn([plugin, '$active'], value)
+    return s;
+  },
+  [ADD_PLUGIN]: (state, action) => {
+    const { plugin } = action.payload
+    const s = { ...state }
+    s.plugins = s.plugins.set(plugin.$plugin_name, Immutable.fromJS(plugin))
+    console.log(s.plugins.toJS())
+    return s;
   }
+
 }
 
 // ------------------------------------
@@ -95,7 +148,8 @@ const blueprint = config.Defaults.blueprint('multiple');
 const initialState = {
   blueprint,
   inContext: [],
-  plugins: config.plugins
+  plugins: Immutable.fromJS(config.plugins),
+  config: config.Defaults.configuration()
 };
 
 export default function editorReducer (state = initialState, action) {

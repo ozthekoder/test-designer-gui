@@ -15,7 +15,7 @@ export const TreeNode = (props) => {
   let tree;
   tree = (
     <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
-      <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}<MdHighlightRemove size="16" style={ { 'float': 'right'  } } onClick={(e) => {e.stopPropagation(); props.setOpAttribute(path)}}/></label>
+      <label htmlFor={[...path, blueprint.get('$id')].join('.')}>{blueprint.get('$name')}<MdHighlightRemove size="16" style={ { 'float': 'right'  } } onClick={(e) => {e.stopPropagation(); console.log(path), props.setOpAttribute(path)}}/></label>
       <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
       <ol>
       {

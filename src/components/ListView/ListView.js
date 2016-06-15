@@ -74,7 +74,7 @@ class ListView extends React.Component {
         {
          this
          .flatten([], this.props.blueprint)
-         .map((op) => <span><ListItem onClick={this.props.setContext.bind(null, op.get('$path'))} caption={op.get('$name')} legend={`${op.get('$plugin')}.${op.get('$op')}`} /><ListDivider /></span>)
+         .map((op, i) => <span><ListItem key={i} onClick={this.props.setContext.bind(null, op.get('$path'))} caption={op.get('$name')} legend={`${op.get('$plugin')}.${op.get('$op')}`} /><ListDivider /></span>)
         }
         </List>
         </div>

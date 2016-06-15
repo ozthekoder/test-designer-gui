@@ -8,12 +8,16 @@ export default class Defaults {
     this.OP_COUNT++;
     switch (type) {
       case 'multiple':
-        return Immutable.fromJS(Object.assign({}, this.OPS, override, { $id: hash.encode(this.OP_COUNT)}))
+        return Immutable.fromJS(Object.assign({}, this.OPS, override, { $id : uuid.v4() }))
       break;
       default:
-        return Immutable.fromJS(Object.assign({}, this.OP, override, { $plugin: type, $id: hash.encode(this.OP_COUNT) }))
+        return Immutable.fromJS(Object.assign({}, this.OP, override, { $plugin: type, $id: uuid.v4() }))
       break;
     }
+  }
+
+  static configuration() {
+    return Immutable.fromJS(this.CONFIG);
   }
 }
 
@@ -74,4 +78,29 @@ Defaults.KEYS = {
   },
   "$timeout": "number",
   "$after": "array"
+}
+
+Defaults.CONFIG = {
+  "output": {
+    "console": true,
+    "report": false
+  },
+  "plugins": {
+    "http": {
+      "file": "./plugins/http",
+      "host": "localhost",
+      "port": 80,
+      "path": ""
+    },
+    "kafka": {
+      "file": "./plugins/kafka",
+      "host": "localhost",
+      "port": 1121,
+      "topics": ["test"],
+      "groupId": "api_tester"
+    },
+    "wait": {
+      "file": "./plugins/wait"
+    }
+  }
 }

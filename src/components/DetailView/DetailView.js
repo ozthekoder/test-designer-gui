@@ -15,7 +15,7 @@ import AceEditor from 'react-ace'
 import { MdDelete } from 'react-icons/lib/md'
 import 'brace/mode/json'
 import 'brace/theme/github'
-const { Defaults, plugins } = config
+const { Defaults } = config
 
 export class DetailView extends React.Component {
   constructor(props) {
@@ -53,44 +53,47 @@ export class DetailView extends React.Component {
   }
   render() {
     const path = this.props.inContext;
+    const plugins = this.props.plugins
     const blueprint = this.props.blueprint.asMutable()
     const context = !path.length ? blueprint : path.reduce((prev, current) => prev.get(current), blueprint)
     const plugin = context.get('$plugin')
-    const operations = plugin ? Object.keys(plugins[plugin]) : []
+    const operations = plugin ? plugins.get(plugin) : Immutable.Map()
     const ops = operations
-    .filter((k) => {
+    .filter((op, k) => {
       return k[0] !== '$'
     })
-    .map((k) => {
+    .map((op, k) => {
       return { label: k, value: k }
     })
+
     const op = context.get('$op')
     const operationsDropdown = (
       plugin ? <Dropdown
-      label='Operation'
+      value={op}
+      label='operation'
       onChange={this.props.setOpAttribute.bind(null, '$op')}
       source={ops}
-      allowBlank
-      value={op}
+      auto
       /> : null
     )
     let args = [];
     let payload = null
 
     if (op) {
-      const currentOp = plugins[plugin][op]
-      args = Object
-      .keys(currentOp)
-      .map((arg, i) => {
-        const types = currentOp[arg].split('|')
+      const currentOp = plugins.get(plugin).get(op)
+      var i = -1;
+      args = currentOp
+      .map((tps, k) => {
+        i = i + 1;
+        const types = tps.split('|')
         if (types.includes('object') || types.includes('array')) {
           let currentVal = context.getIn(['$args', i])
           currentVal = typeof currentVal === 'object' ? JSON.stringify(currentVal, null, 2) : currentVal
           return (
             <div className={classes.argumentBox}>
-            <label className={classes.argumentLabel}>{arg}</label>
+            <label className={classes.argumentLabel}>{k}</label>
             <AceEditor
-            name={arg}
+            name={k}
             minLines={20}
             maxLines={250}
             key={i}
@@ -104,14 +107,14 @@ export class DetailView extends React.Component {
           )
         } else if (types.includes('string') || types.includes('number')) {
           return (
-            <Input key={i} type='text' label={arg} name={arg} value={context.getIn(['$args', i])} onChange={this.props.setOpAttribute.bind(null, ['$args', i])} />
+            <Input key={i} type='text' label={k} name={k} value={context.getIn(['$args', i])} onChange={this.props.setOpAttribute.bind(null, ['$args', i])} />
           )
         } else if(types.includes('boolean')) {
           return (
             <Switch
             key={i}
             checked={context.getIn(['$args', i])}
-            label={arg}
+            label={k}
             onChange={this.props.setOpAttribute.bind(null, ['$args', i])}
             />
           )
@@ -164,8 +167,8 @@ export class DetailView extends React.Component {
       <div className='box'>
       <div className='column'>
           <section>
-            <Input type='text' label='Name' name='$name' value={context.get('$name')} onChange={this.props.setOpAttribute.bind(null, '$name')} />
-            <Input type='text' label='Log' name='$log' value={context.get('$log')} onChange={this.props.setOpAttribute.bind(null, '$log')} />
+            <Input type='text' label='name' name='$name' value={context.get('$name')} onChange={this.props.setOpAttribute.bind(null, '$name')} />
+            <Input type='text' label='log' name='$log' value={context.get('$log')} onChange={this.props.setOpAttribute.bind(null, '$log')} />
             {operationsDropdown}
             {args}
             {payload}

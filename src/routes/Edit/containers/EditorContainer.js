@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { addNewNode, setContext, setOpAttribute } from '../modules/editor'
+import { togglePlugin, addPlugin, addNewNode, setContext, setOpAttribute, updateConfig } from '../modules/editor'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -15,13 +15,17 @@ import Editor from 'components/Editor'
 const mapActionCreators = {
   addNewNode,
   setContext,
-  setOpAttribute
+  setOpAttribute,
+  updateConfig,
+  togglePlugin,
+  addPlugin
 }
 
 const mapStateToProps = (state) => ({
   blueprint: state.editor.blueprint,
   inContext: state.editor.inContext,
-  plugins: state.editor.plugins
+  plugins: state.editor.plugins,
+  config: state.editor.config
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
