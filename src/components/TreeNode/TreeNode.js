@@ -11,7 +11,7 @@ const recursive = [
   '$after'
 ]
 export const TreeNode = (props) => {
-  const { blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext } = props;
+  const { openLookupModal, blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext } = props;
   let tree;
   tree = (
     <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
@@ -29,6 +29,7 @@ export const TreeNode = (props) => {
             <label htmlFor={newPath.join('.')}>{k}</label>
             <input type="checkbox" id={newPath.join('.')} />
             <AddOpMenu
+              openLookupModal={openLookupModal}
               parentId={blueprint.get('$id')}
               path={newPath}
               addNewNode={addNewNode}
@@ -39,6 +40,7 @@ export const TreeNode = (props) => {
               {
                  ops.map((op, i) => <TreeNode
                                     path={[...newPath, i]}
+                                    openLookupModal={openLookupModal}
                                     inContext={inContext}
                                     plugins={plugins}
                                     blueprint={op}

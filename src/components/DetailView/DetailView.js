@@ -72,7 +72,7 @@ export class DetailView extends React.Component {
       value={op}
       label='operation'
       onChange={this.props.setOpAttribute.bind(null, '$op')}
-      source={ops}
+      source={ops.toList()}
       auto
       /> : null
     )

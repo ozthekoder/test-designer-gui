@@ -22,31 +22,31 @@ input {
   }
 
   &[type="$before"] {
-    & > div > button > span, & > label {
+    & > div > div > button > span, & > label, & > div > button > span {
       color: #6B0C22;
     }
   }
 
   &[type="$beforeEach"] {
-    & > div > button > span, & > label {
+    & > div > div > button > span, & > label, & > div > button > span {
       color: #D9042B;
     }
   }
 
   &[type="$ops"] {
-    & > div > button > span, & > label {
+    & > div > div > button > span, & > label, & > div > button > span {
       color: #8364F4;
     }
   }
 
   &[type="$after"] {
-    & > div > button > span, & > label {
+    & > div > div > button > span, & > label, & > div > button > span {
       color: #588C8C;
     }
   }
 
   &[type="$afterEach"] {
-    & > div > button > span, & > label {
+    & > div > div > button > span, & > label, & > div > button > span {
       color: #011C26;
     }
   }

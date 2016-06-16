@@ -20,7 +20,7 @@ export const UPDATE_CONFIG = 'UPDATE_CONFIG'
 export const TOGGLE_PLUGIN = 'TOGGLE_PLUGIN'
 export const ADD_PLUGIN = 'ADD_PLUGIN'
 export const UPLOAD_JSON = 'UPLOAD_JSON'
-
+export const COPY_NODE = 'COPY_NODE'
 
 
 // ------------------------------------
@@ -31,6 +31,16 @@ export function addNewNode ({ type, path }) {
     type: ADD_NEW_NODE,
     payload: {
       type,
+      path
+    }
+  }
+}
+
+export function copyNode (path, op) {
+  return {
+    type: COPY_NODE,
+    payload: {
+      op,
       path
     }
   }
@@ -99,7 +109,8 @@ export const actions = {
   setOpAttribute,
   updateConfig,
   addPlugin,
-  uploadJSON
+  uploadJSON,
+  copyNode
 }
 
 // ------------------------------------
@@ -157,6 +168,14 @@ const ACTION_HANDLERS = {
     s.blueprint = Immutable.fromJS(json.test)
     s.config = Immutable.fromJS(json.config)
     s.inContext = []
+    return s;
+  },
+  [COPY_NODE]: (state, action) => {
+    const { path, op } = action.payload
+    const s = { ...state }
+
+    s.blueprint = s.blueprint.updateIn(path, Immutable.List(), (list) => list.push(op))
+
     return s;
   }
 }

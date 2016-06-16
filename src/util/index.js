@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import uuid from 'uuid'
 
 export function debounce(fn, delay) {
   var timer = null;
@@ -18,6 +19,24 @@ export function isJsonSafePrimitive(value) {
       typeof value === 'boolean'
   );
 };
+
+export function copyFrom(operation) {
+    let newOp = operation.merge(Immutable.Map({ $id: uuid.v4() }));
+    const recursive = [
+      '$before',
+      '$beforeEach',
+      '$ops',
+      '$afterEach',
+      '$after'
+    ]
+
+    recursive
+    .forEach((k) => {
+      newOp = newOp.set(k, newOp.get(k, Immutable.List()).map(copyFrom))
+    })
+
+    return newOp;
+}
 
 export function generateAssertions(json, path=[]) {
   const keys = Object.keys(json);
@@ -64,6 +83,55 @@ export function getAllAssertions(actual, expectation) {
   return tests;
 };
 
-export function getLookupList (list=Immutable.List(), blueprint) {
-  return;
+export function getLookupList (path=[], tree) {
+  let before = tree
+  .get('$before')
+  .map((op, index) =>{
+    return getLookupList([...path, '$before', index], op)
+  })
+
+  if(before.size > 0) {
+    before = before.reduce((prev, next) => prev.merge(next))
+  }
+  let after = tree
+  .get('$after')
+  .map((op, index) =>{
+    return getLookupList([...path, '$after', index], op)
+  })
+  if(after.size > 0) {
+    after = after.reduce((prev, next) => prev.merge(next))
+  }
+
+  let beforeEach = tree
+  .get('$beforeEach')
+  .map((op, index) =>{
+    return getLookupList([...path, '$beforeEach', index], op)
+  })
+  if(beforeEach.size > 0) {
+    beforeEach = beforeEach.reduce((prev, next) => prev.merge(next))
+  }
+
+  let afterEach = tree
+  .get('$afterEach')
+  .map((op, index) =>{
+    return getLookupList([...path, '$afterEach', index], op)
+  })
+  if(afterEach.size > 0) {
+    afterEach = afterEach.reduce((prev, next) => prev.merge(next))
+  }
+
+  let ops = tree
+  .get('$ops', Immutable.List())
+  .map((op, index) =>{
+    return getLookupList([...path, '$ops', index], op)
+  })
+  if(ops.size > 0) {
+    ops = ops.reduce((prev, next) => prev.merge(next))
+  }
+  return Immutable.Map({ [path.join('.')]: tree.get('$name').replace(/ /g, '_') })
+  .merge(before)
+  .merge(beforeEach)
+  .merge(ops)
+  .merge(afterEach)
+  .merge(after)
 }
