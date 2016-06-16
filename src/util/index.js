@@ -20,8 +20,25 @@ export function isJsonSafePrimitive(value) {
   );
 };
 
+export function saveOperations(op) {
+  const ops = Immutable.fromJS(JSON.parse(localStorage.getItem('operations') || '{}'));
+  if(op.get('$lookup')) {
+    localStorage.setItem('operations', JSON.stringify(ops.set(op.get('$id'), op).toJS()));
+  }
+    const recursive = [
+      '$before',
+      '$beforeEach',
+      '$ops',
+      '$afterEach',
+      '$after'
+    ];
+
+    recursive.forEach((k) => op.get(k, Immutable.List()).forEach(saveOperations))
+
+}
+
 export function copyFrom(operation) {
-    let newOp = operation.merge(Immutable.Map({ $id: uuid.v4() }));
+    let newOp = operation.merge(Immutable.Map({ $id: uuid.v4(), $lookup: false }));
     const recursive = [
       '$before',
       '$beforeEach',
@@ -86,6 +103,7 @@ export function getAllAssertions(actual, expectation) {
 export function getLookupList (path=[], tree) {
   let before = tree
   .get('$before')
+  .filter((op) => !op.get('$lookup'))
   .map((op, index) =>{
     return getLookupList([...path, '$before', index], op)
   })
@@ -95,6 +113,7 @@ export function getLookupList (path=[], tree) {
   }
   let after = tree
   .get('$after')
+  .filter((op) => !op.get('$lookup'))
   .map((op, index) =>{
     return getLookupList([...path, '$after', index], op)
   })
@@ -104,6 +123,7 @@ export function getLookupList (path=[], tree) {
 
   let beforeEach = tree
   .get('$beforeEach')
+  .filter((op) => !op.get('$lookup'))
   .map((op, index) =>{
     return getLookupList([...path, '$beforeEach', index], op)
   })
@@ -113,6 +133,7 @@ export function getLookupList (path=[], tree) {
 
   let afterEach = tree
   .get('$afterEach')
+  .filter((op) => !op.get('$lookup'))
   .map((op, index) =>{
     return getLookupList([...path, '$afterEach', index], op)
   })
@@ -122,6 +143,7 @@ export function getLookupList (path=[], tree) {
 
   let ops = tree
   .get('$ops', Immutable.List())
+  .filter((op) => !op.get('$lookup'))
   .map((op, index) =>{
     return getLookupList([...path, '$ops', index], op)
   })

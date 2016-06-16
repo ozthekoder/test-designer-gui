@@ -1,11 +1,14 @@
 import React from 'react'
 import classes from './Editor.scss'
 import TreeView from '../TreeView'
+import Immutable from 'immutable'
 import ListView from '../ListView'
 import DetailView from '../DetailView'
 import ToolBox from '../ToolBox'
+import uuid from 'uuid'
 import Autocomplete from 'react-toolbox/lib/autocomplete'
 import Dialog from 'react-toolbox/lib/dialog'
+import lookupTheme from './lookup.scss'
 import { getLookupList, copyFrom } from '../../util'
 
 class Editor extends React.Component {
@@ -27,18 +30,27 @@ class Editor extends React.Component {
   }
 
   openLookupModal(path, e) {
+    const { blueprint } = this.props;
+    const currentId = blueprint.get('$id');
+    let lookupMap = Immutable.fromJS(JSON.parse(localStorage.getItem('operations')));
+    const lookupList = {}
+
+    lookupMap.forEach((v, k) => {
+      lookupList[k] = v.get('$name');
+    });
+
     this.setState({
       lookupModalActive: true,
-      lookupList: getLookupList([], this.props.blueprint).toJS(),
+      lookupList,
       path
     })
   }
 
   addFromLookUp(value) {
     const bp = this.props.blueprint;
+    let lookupMap = Immutable.fromJS(JSON.parse(localStorage.getItem('operations')));
     console.log('VALUE', value);
-    const op = bp
-    .getIn(value ? value.split('.') : []);
+    const op = lookupMap.get(value);
     this.props.copyNode(this.state.path, copyFrom(op));
     this.closeLookupModal();
   }
@@ -61,6 +73,7 @@ class Editor extends React.Component {
           </div>
         </div>
         <Dialog
+          theme={lookupTheme}
           name="lookup"
           active={this.state.lookupModalActive}
           onEscKeyDown={this.closeLookupModal.bind(this)}

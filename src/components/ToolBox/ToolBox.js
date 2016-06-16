@@ -6,7 +6,8 @@ import Switch from 'react-toolbox/lib/switch'
 import Input from 'react-toolbox/lib/input'
 import {Button, IconButton} from 'react-toolbox/lib/button'
 import { FaDownload, FaUpload } from 'react-icons/lib/fa'
-import { MdSettingsApplications } from 'react-icons/lib/md'
+import { MdSettingsApplications, MdSave } from 'react-icons/lib/md'
+import { saveOperations } from '../../util'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import 'brace/mode/json'
@@ -53,6 +54,11 @@ class ToolBox extends React.Component {
     this.props.uploadJSON(JSON.parse(this.state.uploadedJSON));
   }
 
+  saveBlueprint() {
+    const { blueprint } = this.props;
+    saveOperations(blueprint);
+  }
+
   render() {
     const newPluginEditor = (
       <div>
@@ -93,6 +99,7 @@ class ToolBox extends React.Component {
       <div className='column'>
       <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaDownload size="32"/>} href={`data:text/json;charset=utf-8, ${encodeURIComponent(JSON.stringify({ config: this.props.config.toJS(), test: this.props.blueprint.toJS()}, null, 2))}`} download={`test_bp_${this.props.blueprint.get('$id')}.json`} />
       <Link style={{ margin: '1rem 0 0 1rem' }} icon={<FaUpload size="32" />} href="" onClick={(e) => { e.preventDefault(); this.toggleUploadModal() }}/>
+      <Link style={{ margin: '1rem 0 0 1rem' }} icon={<MdSave size="32" />} href="" onClick={(e) => { e.preventDefault(); this.saveBlueprint() }}/>
       <Dialog
       name="upload_json"
       actions={

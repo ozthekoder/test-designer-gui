@@ -182,6 +182,11 @@ export class DetailView extends React.Component {
             label="Halt"
             onChange={this.props.setOpAttribute.bind(null, '$halt')}
             />
+            <Switch
+            checked={context.get('$lookup')}
+            label="Lookup"
+            onChange={this.props.setOpAttribute.bind(null, '$lookup')}
+            />
           </section>
         </div>
       </div>
