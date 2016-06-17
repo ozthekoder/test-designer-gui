@@ -49,7 +49,6 @@ class Editor extends React.Component {
   addFromLookUp(value) {
     const bp = this.props.blueprint;
     let lookupMap = Immutable.fromJS(JSON.parse(localStorage.getItem('operations')));
-    console.log('VALUE', value);
     const op = lookupMap.get(value);
     this.props.copyNode(this.state.path, copyFrom(op));
     this.closeLookupModal();
