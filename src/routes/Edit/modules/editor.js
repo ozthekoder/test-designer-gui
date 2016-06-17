@@ -36,6 +36,15 @@ export function addNewNode ({ type, path }) {
   }
 }
 
+export function removeNode (path) {
+  return {
+    type: REMOVE_NODE,
+    payload: {
+      path
+    }
+  }
+}
+
 export function copyNode (path, op) {
   return {
     type: COPY_NODE,
@@ -110,7 +119,8 @@ export const actions = {
   updateConfig,
   addPlugin,
   uploadJSON,
-  copyNode
+  copyNode,
+  removeNode
 }
 
 // ------------------------------------
@@ -137,10 +147,11 @@ const ACTION_HANDLERS = {
     const s = { ...state }
     const { blueprint, inContext } = s
     if(value) {
-    s.blueprint = blueprint.setIn([...inContext, ...attr], value)
+      s.blueprint = blueprint.setIn([...inContext, ...attr], value)
     } else {
-    s.blueprint = blueprint.deleteIn([...inContext, ...attr])
-
+      const path = [...inContext]
+      s.inContext = []
+      s.blueprint = blueprint.deleteIn([...path, ...attr])
     }
     return s
   },
@@ -175,7 +186,15 @@ const ACTION_HANDLERS = {
     const s = { ...state }
     s.blueprint = s.blueprint.updateIn(path, Immutable.List(), (list) => list.push(op))
     return s;
+  },
+  [REMOVE_NODE]: (state, action) => {
+    const { path } = action.payload
+    const s = { ...state }
+    s.inContext = [];
+    s.blueprint = s.blueprint.deleteIn([...path])
+    return s;
   }
+
 }
 
 // ------------------------------------

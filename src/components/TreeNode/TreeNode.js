@@ -11,14 +11,14 @@ const recursive = [
   '$after'
 ]
 export const TreeNode = (props) => {
-  const { openLookupModal, blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext } = props;
+  const { openLookupModal, blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext, removeNode } = props;
   let tree;
   tree = (
     <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
       <label htmlFor={[...path, blueprint.get('$id')].join('.')}>
         {blueprint.get('$name')}
         {
-        path.length ? <MdHighlightRemove size="16" style={ { 'float': 'right'  } } onClick={(e) => {e.stopPropagation(); props.setOpAttribute(path)}}/> : null
+          !isRoot ? <MdHighlightRemove size="16" style={ { 'float': 'right'  } } onClick={(e) => {e.stopPropagation(); console.log(path); removeNode(path)}}/> : null
         }
         </label>
       <input type="checkbox" id={[...path, blueprint.get('$id')].join('.')} />
@@ -45,6 +45,7 @@ export const TreeNode = (props) => {
               {
                  ops.map((op, i) => <TreeNode
                                     path={[...newPath, i]}
+                                    removeNode={removeNode}
                                     openLookupModal={openLookupModal}
                                     inContext={inContext}
                                     plugins={plugins}

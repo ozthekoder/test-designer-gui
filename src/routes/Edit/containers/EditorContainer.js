@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { copyNode, uploadJSON, togglePlugin, addPlugin, addNewNode, setContext, setOpAttribute, updateConfig } from '../modules/editor'
+import { removeNode, copyNode, uploadJSON, togglePlugin, addPlugin, addNewNode, setContext, setOpAttribute, updateConfig } from '../modules/editor'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -20,7 +20,8 @@ const mapActionCreators = {
   togglePlugin,
   addPlugin,
   uploadJSON,
-  copyNode
+  copyNode,
+  removeNode
 }
 
 const mapStateToProps = (state) => ({
