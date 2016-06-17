@@ -18,6 +18,8 @@ class ListView extends React.Component {
     if(before.size > 0) {
       before = before.reduce((prev, next) => prev.concat(next))
     }
+
+
     let after = tree
     .get('$after')
     .map((op, index) =>{
@@ -26,6 +28,7 @@ class ListView extends React.Component {
     if(after.size > 0) {
       after = after.reduce((prev, next) => prev.concat(next))
     }
+
 
     let beforeEach = tree
     .get('$beforeEach')
@@ -36,6 +39,8 @@ class ListView extends React.Component {
       beforeEach = beforeEach.reduce((prev, next) => prev.concat(next))
     }
 
+
+
     let afterEach = tree
     .get('$afterEach')
     .map((op, index) =>{
@@ -45,6 +50,7 @@ class ListView extends React.Component {
       afterEach = afterEach.reduce((prev, next) => prev.concat(next))
     }
 
+
     let ops;
     if(tree.has('$ops')) {
       ops = tree
@@ -52,18 +58,17 @@ class ListView extends React.Component {
       .map((op, index) =>{
         return this.flatten([...path, '$ops', index], op)
       })
-      .map((op) => beforeEach.concat(op).concat(afterEach))
-
-      if(ops.size > 0) {
-        ops = ops.reduce((prev, next) => prev.concat(next))
-      }
+      .map((op) => {
+        return beforeEach.concat(op).concat(afterEach)
+      })
+      ops = ops.reduce((prev, next) => prev.concat(next), Immutable.List())
     } else {
       ops = beforeEach
       .concat(Immutable.List([tree.set('$path', path)]))
       .concat(afterEach)
     }
 
-    return ops.size ? before.concat(ops).concat(after) : Immutable.List();
+    return before.concat(ops).concat(after);
   }
 
   render(){

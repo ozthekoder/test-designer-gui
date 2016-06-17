@@ -37,7 +37,8 @@ Defaults.OP = {
   $payload: {},
   $afterEach: [],
   $after: [],
-  $lookup: false
+  $lookup: false,
+  $repeat: 0
 }
 
 Defaults.OPS = {
@@ -50,7 +51,8 @@ Defaults.OPS = {
   $ops: [],
   $afterEach: [],
   $after: [],
-  $lookup: false
+  $lookup: false,
+  $repeat: 0
 }
 
 Defaults.KEYS = {
@@ -67,6 +69,7 @@ Defaults.KEYS = {
   "$ops": "array",
   "$args": "array",
   "$lookup": "boolean",
+  "$repeat": "number",
   "$payload": {
     "$expect": {
       "$value": "number|string|array|object",

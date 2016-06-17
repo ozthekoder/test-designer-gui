@@ -173,9 +173,7 @@ const ACTION_HANDLERS = {
   [COPY_NODE]: (state, action) => {
     const { path, op } = action.payload
     const s = { ...state }
-
     s.blueprint = s.blueprint.updateIn(path, Immutable.List(), (list) => list.push(op))
-
     return s;
   }
 }

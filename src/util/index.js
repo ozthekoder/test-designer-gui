@@ -33,7 +33,11 @@ export function saveOperations(op) {
       '$after'
     ];
 
-    recursive.forEach((k) => op.get(k, Immutable.List()).forEach(saveOperations))
+    recursive.forEach((k) => {
+      if(op.has(k)) {
+        op.get(k).forEach(saveOperations)
+      }
+    })
 
 }
 
@@ -49,7 +53,9 @@ export function copyFrom(operation) {
 
     recursive
     .forEach((k) => {
-      newOp = newOp.set(k, newOp.get(k, Immutable.List()).map(copyFrom))
+      if(operation.has(k)) {
+        newOp = newOp.set(k, newOp.get(k, Immutable.List()).map(copyFrom))
+      }
     })
 
     return newOp;

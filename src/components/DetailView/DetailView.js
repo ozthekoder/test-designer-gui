@@ -172,6 +172,7 @@ export class DetailView extends React.Component {
             {operationsDropdown}
             {args}
             {payload}
+            <Input type='text' label='repeat' name='$repeat' value={context.get('$repeat')} onChange={this.props.setOpAttribute.bind(null, '$repeat')} />
             <Switch
             checked={context.get('$skip')}
             label="Skip"
