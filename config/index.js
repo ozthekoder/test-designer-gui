@@ -19,14 +19,14 @@ const config = {
   // ----------------------------------
   path_base  : path.resolve(__dirname, '..'),
   dir_client : 'src',
-  dir_dist   : 'dist',
+  dir_dist   : 'public',
   dir_server : 'server',
   dir_test   : 'tests',
 
   // ----------------------------------
   // Server Configuration
   // ----------------------------------
-  server_host : localip, // use string 'localhost' to prevent exposure on local network
+  server_host : 'localhost', //localip, // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
 
   // ----------------------------------
