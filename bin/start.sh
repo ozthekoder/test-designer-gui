@@ -11,4 +11,4 @@ do
   esac
 done
 
-NODE_ENV=production PORT=PRT npm run deploy:prod && http-server -p "${PRT}" -o
+NODE_ENV=production PORT=PRT npm run deploy:prod && node_modules/.bin/http-server -p "${PRT}" -o

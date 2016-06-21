@@ -1,5 +1,5 @@
 {
-  "name": "api-test-designer",
+  "name": "test-designer-gui",
   "version": "0.0.1",
   "description": "API Test Designer Tool",
   "main": "index.js",
@@ -75,7 +75,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/ozthekoder/test-designer-gui.git"
   },
   "author": "Osman Ozdemir <oozdemir2704@gmail.com> (http://osmanozdem.ir)",
   "license": "MIT",
