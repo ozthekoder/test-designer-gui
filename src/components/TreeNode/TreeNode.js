@@ -11,7 +11,7 @@ const recursive = [
   '$after'
 ]
 export const TreeNode = (props) => {
-  const { openLookupModal, blueprint, isRoot, path, addNewNode, setOpAttribute, plugins, inContext, setContext, removeNode } = props;
+  const { config, openLookupModal, blueprint, isRoot, path, addNewNode, setOpAttribute, inContext, setContext, removeNode } = props;
   let tree;
   tree = (
     <li type="$op" onClick={(e) => { e.stopPropagation(); setContext(path) }} className={classes.branch}>
@@ -39,7 +39,7 @@ export const TreeNode = (props) => {
               path={newPath}
               addNewNode={addNewNode}
               collection={k}
-              plugins={plugins}
+              config={config}
               />
             <ol>
               {
@@ -48,7 +48,7 @@ export const TreeNode = (props) => {
                                     removeNode={removeNode}
                                     openLookupModal={openLookupModal}
                                     inContext={inContext}
-                                    plugins={plugins}
+                                    config={config}
                                     blueprint={op}
                                     key={i}
                                     isRoot={false}
@@ -80,7 +80,6 @@ export const TreeNode = (props) => {
 TreeNode.propTypes = {
   isRoot: React.PropTypes.bool.isRequired,
   inContext: React.PropTypes.array.isRequired,
-  plugins: React.PropTypes.object.isRequired,
   blueprint: React.PropTypes.object.isRequired,
   addNewNode: React.PropTypes.func.isRequired
 }

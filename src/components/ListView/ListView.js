@@ -68,18 +68,27 @@ class ListView extends React.Component {
       .concat(afterEach)
     }
 
-    return before.concat(ops).concat(after);
+    let fin = before.concat(ops).concat(after);
+    const repeat = tree.get('$repeat');
+    let i;
+
+    for(i=0; i < repeat; i++) {
+      fin = fin.concat(fin);
+    }
+
+    return fin;
   }
 
   render(){
     const flat = this.flatten([], this.props.blueprint)
+    let i=-1;
     return (
       <div className='box'>
         <div className="column">
         <List selectable ripple>
         {
           flat
-         .map((op, i) => <span><ListItem key={i} onClick={this.props.setContext.bind(null, op.get('$path'))} caption={op.get('$name')} legend={`${op.get('$plugin')}.${op.get('$op')}`} /><ListDivider /></span>)
+         .map((op, i) => <span><ListItem key={++i} onClick={this.props.setContext.bind(null, op.get('$path'))} caption={op.get('$name')} legend={`${op.get('$plugin')}.${op.get('$op')}`} /><ListDivider /></span>)
         }
         </List>
         </div>

@@ -1,6 +1,5 @@
 {
   "$plugin_name": "kafka",
-  "$active": true,
   "publish" : {
     "payload": "object"
   },

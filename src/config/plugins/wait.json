@@ -1,6 +1,5 @@
 {
   "$plugin_name": "wait",
-  "$active": true,
   "wait" : {
     "seconds": "number"
   }

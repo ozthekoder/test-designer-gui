@@ -22,7 +22,6 @@ export const ADD_PLUGIN = 'ADD_PLUGIN'
 export const UPLOAD_JSON = 'UPLOAD_JSON'
 export const COPY_NODE = 'COPY_NODE'
 
-
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -164,13 +163,18 @@ const ACTION_HANDLERS = {
   [TOGGLE_PLUGIN]: (state, action) => {
     const { plugin, value } = action.payload
     const s = { ...state }
-    s.plugins = s.plugins.setIn([plugin, '$active'], value)
+    s.config = s.config.setIn(['plugins', plugin, 'active'], value)
     return s;
   },
   [ADD_PLUGIN]: (state, action) => {
     const { plugin } = action.payload
     const s = { ...state }
-    s.plugins = s.plugins.set(plugin.$plugin_name, Immutable.fromJS(plugin))
+    const p = {
+      interface: plugin,
+      active: true
+    }
+
+    s.config = s.config.setIn(['plugins', plugin.$plugin_name], Immutable.fromJS(p))
     return s;
   },
   [UPLOAD_JSON]: (state, action) => {
@@ -194,7 +198,6 @@ const ACTION_HANDLERS = {
     s.blueprint = s.blueprint.deleteIn([...path])
     return s;
   }
-
 }
 
 // ------------------------------------

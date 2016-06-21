@@ -37,7 +37,16 @@ export function saveOperations(op) {
       if(op.has(k)) {
         op.get(k).forEach(saveOperations)
       }
-    })
+    });
+}
+
+export function save(state) {
+  const { blueprint, config } = state;
+
+  saveOperations(blueprint);
+  const tests = Immutable.fromJS(JSON.parse(localStorage.getItem('tests') || '{}'));
+
+  localStorage.setItem('tests', JSON.stringify(tests.set(`${blueprint.get('$id')}.${Date.now()}`, { config: config.toJS(), test: blueprint.toJS() })));
 
 }
 

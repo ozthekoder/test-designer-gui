@@ -96,17 +96,23 @@ Defaults.CONFIG = {
       "file": "./plugins/http",
       "host": "localhost",
       "port": 80,
-      "path": ""
+      "path": "",
+      "interface": plugins.http,
+      "active": true
     },
     "kafka": {
       "file": "./plugins/kafka",
       "host": "localhost",
       "port": 1121,
       "topics": ["test"],
-      "groupId": "api_tester"
+      "groupId": "api_tester",
+      "interface": plugins.kafka,
+      "active": true
     },
     "wait": {
-      "file": "./plugins/wait"
+      "file": "./plugins/wait",
+      "interface": plugins.wait,
+      "active": true
     }
   }
 }

@@ -51,13 +51,14 @@ export class DetailView extends React.Component {
   removeAssertion(path) {
     this.props.setOpAttribute(path, null);
   }
+
   render() {
     const path = this.props.inContext;
-    const plugins = this.props.plugins
+    const plugins = this.props.config.get('plugins');
     const blueprint = this.props.blueprint.asMutable()
     const context = !path.length ? blueprint : path.reduce((prev, current) => prev.get(current), blueprint)
     const plugin = context.get('$plugin')
-    const operations = plugin ? plugins.get(plugin) : Immutable.Map()
+    const operations = plugins.getIn([plugin, 'interface'], Immutable.Map());
     const ops = operations
     .filter((op, k) => {
       return k[0] !== '$'
@@ -80,7 +81,7 @@ export class DetailView extends React.Component {
     let payload = null
 
     if (op) {
-      const currentOp = plugins.get(plugin).get(op)
+      const currentOp = plugins.getIn([plugin, 'interface']).get(op)
       var i = -1;
       args = currentOp
       .map((tps, k) => {
@@ -197,8 +198,7 @@ export class DetailView extends React.Component {
 
 DetailView.propTypes = {
   inContext: React.PropTypes.array.isRequired,
-  blueprint: React.PropTypes.object.isRequired,
-  plugins: React.PropTypes.object.isRequired,
+  blueprint: React.PropTypes.object.isRequired
 }
 
 export default DetailView

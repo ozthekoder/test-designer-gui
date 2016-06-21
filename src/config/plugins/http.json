@@ -1,6 +1,5 @@
 {
   "$plugin_name": "http",
-  "$active": true,
   "get" : {
     "endpoint": "string",
     "headers": "object"

@@ -7,7 +7,7 @@ import Input from 'react-toolbox/lib/input'
 import {Button, IconButton} from 'react-toolbox/lib/button'
 import { FaDownload, FaUpload } from 'react-icons/lib/fa'
 import { MdSettingsApplications, MdSave } from 'react-icons/lib/md'
-import { saveOperations } from '../../util'
+import { save } from '../../util'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import 'brace/mode/json'
@@ -55,8 +55,7 @@ class ToolBox extends React.Component {
   }
 
   saveBlueprint() {
-    const { blueprint } = this.props;
-    saveOperations(blueprint);
+    save(this.props);
   }
 
   render() {
@@ -86,6 +85,7 @@ class ToolBox extends React.Component {
         plugin
         .filter((p, key) => key !== 'file')
         .filter((p, key) => key !== 'topics')
+        .filter((p, key) => key !== 'interface')
         .map((val, k) => (
           <Input type='text' label={k} name={`${key}.${k}`} value={val} onChange={this.props.updateConfig.bind(null, ['plugins', key, k])} />
         ))
@@ -141,9 +141,11 @@ class ToolBox extends React.Component {
         <section>
         <h2>Plugins</h2>
           {
-            this.props.plugins.map((plugin, key) =>
+            this.props.config
+            .get('plugins')
+            .map((plugin, key) =>
               <Switch
-                checked={plugin.get('$active')}
+                checked={plugin.get('active')}
                 label={key}
                 onChange={this.props.togglePlugin.bind(null, key)}
               />
@@ -160,7 +162,7 @@ class ToolBox extends React.Component {
 
 ToolBox.propTypes = {
   blueprint: React.PropTypes.object.isRequired,
-  plugins: React.PropTypes.object.isRequired,
+  config: React.PropTypes.object.isRequired,
 }
 
 export default ToolBox
