@@ -1,6 +1,6 @@
 {
   "name": "test-designer-gui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "API Test Designer Tool",
   "main": "index.js",
   "engines": {
@@ -11,6 +11,7 @@
     "start-test-designer": "bin/start.sh"
   },
   "scripts": {
+    "prepublish": "npm run deploy:prod",
     "clean": "rimraf dist",
     "compile": "better-npm-run compile",
     "lint": "eslint src tests server",

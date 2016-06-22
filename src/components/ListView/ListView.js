@@ -68,12 +68,12 @@ class ListView extends React.Component {
       .concat(afterEach)
     }
 
-    let fin = before.concat(ops).concat(after);
+    const single = before.concat(ops).concat(after);
     const repeat = tree.get('$repeat');
     let i;
-
+    let fin = single;
     for(i=0; i < repeat; i++) {
-      fin = fin.concat(fin);
+      fin = fin.concat(single);
     }
 
     return fin;
