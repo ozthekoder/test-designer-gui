@@ -145,13 +145,7 @@ const ACTION_HANDLERS = {
     const attr = Array.isArray(attribute) ? attribute : [attribute]
     const s = { ...state }
     const { blueprint, inContext } = s
-    if(value) {
-      s.blueprint = blueprint.setIn([...inContext, ...attr], value)
-    } else {
-      const path = [...inContext]
-      s.inContext = []
-      s.blueprint = blueprint.deleteIn([...path, ...attr])
-    }
+    s.blueprint = blueprint.setIn([...inContext, ...attr], value)
     return s
   },
   [UPDATE_CONFIG]: (state, action) => {
